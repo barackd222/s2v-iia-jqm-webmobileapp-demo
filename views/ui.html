@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+	
+        <title>Speed 2 Value - Integration in Action Workshop</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">		
+		<link rel="stylesheet" href="../src/css/themes/myCustomOracleThemes.min.css" />
+		<link rel="stylesheet" href="../src/css/themes/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" href="../src/css/themes/jquery.mobile.structure-1.4.0.min.css" />
+		<script src="../lib/jquery-1.10.2.min.js"></script>
+		<script src="../lib/jquery.mobile-1.4.0.min.js"></script>
+		<script src="../lib/login-libs.js"></script>
+		<script src="../lib/shared-properties.js"></script>
+
+	 <style type="text/css">
+		.ui-page {
+			background:url(../images/oracle_hq.png);			
+			background-repeat:no-repeat;
+			background-position:center center;
+			background-attachment:scroll;			
+			background-size:cover; 
+			
+		}
+	 </style>
+    </head>
+    
+    <body>
+        <div data-role="page" id="login" data-theme="b">
+			<div data-role="header" data-position="fixed" data-disable-page-zoom="false" data-fullscreen="false" data-tap-toggle="false">
+				<h1>Integration in Action</h1>
+
+				<div class="ui-btn-left">
+				<a href="#setColourPanel" data-icon="carat-l" data-iconpos="notext" data-role="button">Set Colour</a> 
+				| 
+				<a href="#makeShapePanel" data-icon="carat-r" data-iconpos="notext" data-role="button">Make Shape</a>
+				</div>
+				<div class="ui-btn-right">
+					<!--a id="newRequestPageDemoButton" href="javascript:demoMode()" data-icon="eye" data-iconpos="notext" data-role="button">Demo Mode</a> 
+					|-->
+					<img src="../images/user-white.gif" width="16" height="19"> <font size="2">Anonymous</font>
+				</div>	
+				
+			</div>		
+            <div data-role="content">
+			
+				<img src="../images/oracle.jpg" width="150" height="60" align="right"><br>
+			
+                <form id="postForm" action="http://" method="POST">
+                    <div data-role="fieldcontain">
+                        <textarea id="event" placeholder="Event"></textarea>
+						<input type="date" id="when"/>
+                    </div>
+                    <a id="postEvent" data-role="button" onclick="javascript:postEvent($('#event').val(), $('#when').val())">Post</a>
+                </form>
+				<!--
+				<br>
+				&nbsp;<a href="#setColourPanel">Set Colours</a> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;<a href="#makeShapePanel">Make Shapes</a>
+				-->
+            </div>
+			
+			<div data-role="panel" data-position="left" data-position-fixed="false" data-display="overlay" id="setColourPanel" data-theme="a">
+			
+				<div data-role="content">
+					<form id="setColourForm" action="http://" method="POST">
+						<select id="colour" data-native-menu="false">							
+							<option>Colour</option>
+							<option value="RED">Red</option>
+							<option value="BLUE">Blue</option>
+							<option value="YELLOW">Yellow</option>
+							<option value="GREEN">Green</option>
+							<option value="PINK">Pink</option>
+						</select>
+						<a data-role="button" data-icon="action" data-iconpos="right" onclick="javascript:setColour($('#colour').val())">Set Colour</a>
+					</form>
+				</div>				
+			</div>
+
+			<div data-role="panel" data-position="right" data-position-fixed="false" data-display="overlay" id="makeShapePanel" data-theme="a">
+			
+				<div data-role="content">
+					<form id="makeShapeForm" action="http://" method="POST">
+						<select id="shape" data-native-menu="false">							
+							<option>Shape</option>
+							<option value="SQUARE">Square</option>
+							<option value="TRIANGLE">Triangle</option>
+							<option value="LINE">Line</option>
+						</select>
+						<select id="shapeColour" data-native-menu="false">							
+							<option>Colour</option>
+							<option value="RED">Red</option>
+							<option value="BLUE">Blue</option>
+							<option value="YELLOW">Yellow</option>
+							<option value="GREEN">Green</option>
+							<option value="PINK">Pink</option>
+						</select>
+						<a data-role="button" data-icon="action" data-iconpos="right" onclick="javascript:makeShape($('#shape').val(), $('#shapeColour').val())">Make Shape</a>
+					</form>
+				</div>						
+			</div>			
+			
+        </div>	
+	</body>	
+</html>
