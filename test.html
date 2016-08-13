@@ -1,0 +1,127 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script>
+       
+            function postEventAJAX(event, when){
+
+                var globalIPAddressICS = "soa12c.vbox.oracle.com";
+                var globalPortICS = "7001";
+                var uriOrchestration = "http://" + globalIPAddressICS + ":" + globalPortICS + "/SocialMediaAPIOSBProject/SocialMediaAPI/event";// OSB -> SOA Orchestration REST API
+                var payloadOrchestration = {"id":"70190000000Xf4w","name":"Speed 2 Value - Integration in Action Workshop","description": event, "when": when};
+
+                $(function() {
+                $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: uriOrchestration,
+                data: payloadOrchestration,
+                username: 'weblogic',
+                password: 'welcome1',
+                success: function(data, textStatus, jqXHR){ alert('It worked'); },
+                error: function(jqXHR, textStatus, errorThrown){ alert('Error: ' + textStatus); }
+                
+                });
+                });
+
+            }
+
+            function postEvent(event, when) {
+
+                var globalIPAddressICS = "soa12c.vbox.oracle.com";
+                var globalPortICS = "7001";
+
+                console.log("Event is [" + event + "], when [" + when + "]");
+
+                if (!(event != null && event.length > 0) || !(when != null && when.length > 0))
+                    return;
+
+
+                var uriOrchestration = "http://" + globalIPAddressICS + ":" + globalPortICS + "/SocialMediaAPIOSBProject/SocialMediaAPI/event";// OSB -> SOA Orchestration REST API
+
+                //var payloadOrchestration = {"id":"70190000000Xf4w","name":"Speed 2 Value - Integration in Action Workshop","description": event, "when": when};
+
+                var payloadOrchestration = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+                                                '<soap:Body>' +
+                                                            '<ns1:GenericMessage xmlns:ns1="http://www.oracle.com/s2v/iia/v1">' +
+                                                                    '<ns1:id>70190000000Xf4w</ns1:id>' +
+                                                                    '<ns1:name>Speed 2 Value - Integration in Action Workshop</ns1:name>' +
+                                                                    '<ns1:description>Welcome to the Super S2V - Integration in Action Workshop. Now in your own city</ns1:description>' +
+                                                                    '<ns1:when>2016-08-21</ns1:when>' +
+                                                    '</ns1:GenericMessage>' +
+                                                '</soap:Body>' +
+                                            '</soap:Envelope>';
+
+                console.log("uriOrchestration is [" + uriOrchestration + "]");
+
+                console.log("payloadOrchestration is [" + JSON.stringify(payloadOrchestration) + "]");
+
+                // Initiating XMLHttpRequest Object:
+                var http_request = initiateXMLHttpObject();
+
+                // Send HTTP Request to Facebook, LinkedIn, Salesforce amd Google Calendar:
+                sendRequest(http_request, "POST", uriOrchestration, true, payloadOrchestration);
+
+
+                setTimeout(alert("You send your message successfully!"), 2500);
+
+                $("#postForm")[0].reset();
+            }
+
+
+            function sendRequest(http_request, verb, uri, async, data) {
+
+                http_request = new XMLHttpRequest();
+
+                console.log("Sending [" + uri + "] under verb [" + verb + "] via [" + http_request + "]");
+
+                http_request.open(verb, uri, async);
+                //http_request.setRequestHeader("Accept", "application/json");
+                //http_request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');	
+                //http_request.send(JSON.stringify(data));
+                http_request.setRequestHeader("Accept", "text/xml");
+                http_request.setRequestHeader('Content-Type', 'text/xml');	
+                http_request.send(data);
+
+                
+
+                console.log("Your message was sent successfully.");
+            }
+
+            function initiateXMLHttpObject() {
+
+                // Initiating XMLHttpRequest Object:
+                var http_request = new XMLHttpRequest();
+
+                try {
+                    // Opera 8.0+, Firefox, Chrome, Safari
+                    http_request = new XMLHttpRequest();
+                } catch (e) {
+                    // Internet Explorer Browsers
+                    try {
+                        http_request = new ActiveXObject("Msxml2.XMLHTTP");
+                    } catch (e) {
+                        try {
+                            http_request = new ActiveXObject("Microsoft.XMLHTTP");
+                        } catch (e) {
+                            // Something went wrong
+                            alert("Your browser broke!");
+                            return false;
+                        }
+                    }
+                }
+
+          }
+
+            //postEvent("Hello World", "2016-08-21");
+            postEventAJAX("Hello World", "2016-08-21");
+
+        </script>
+</head>
+
+<body>
+    Done!
+</body>
+
+</html>

@@ -5,9 +5,10 @@
 // Export a function, so that we can pass 
 // the app and io instances from the app.js file:
 
-module.exports = function(app){
+module.exports = function (app) {
 
-	app.get('/', function(req, res){
+	app.get('/', function (req, res) {
+		res.header("Access-Control-Allow-Origin", "*");
 
 		// Render views/ui.html
 		res.render('ui');

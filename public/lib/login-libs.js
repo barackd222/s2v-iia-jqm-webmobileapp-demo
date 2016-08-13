@@ -78,44 +78,50 @@ $(document).ready(function () {
 
 function postEvent(event, when) {
 
-	alert("Event is [" + event + "], when [" + when + "]");
+	console.log("Event is [" + event + "], when [" + when + "]");
 
 	if (!(event != null && event.length > 0) || !(when != null && when.length > 0))
 		return;
 
 
-	var uri = "http://" + globalIPAddress + ":" + globalPort + "/event/" + event + "/when/" + when;// ICS API	
+	var uriOrchestration = "https://" + globalIPAddressICS + ":" + globalPortICS + "/integration/flowapi/rest/S2V_IIA_REST2OSBRE/v01/event";// ICS -> OSB -> SOA Orchestration REST API
+	//var uriOrchestration = "http://" + globalIPAddressICS + ":" + globalPortICS + "/SocialMediaAPIOSBProject/SocialMediaAPI/event";// OSB -> SOA Orchestration REST API
 
-	alert("URI is [" + uri + "]");
+	var payloadOrchestration = {"id":"70190000000Xf4w","name":"Speed 2 Value - Integration in Action Workshop","description": event, "when": when};
+
+	console.log("uriOrchestration is [" + uriOrchestration + "]");
+
+	console.log("payloadOrchestration is [" + JSON.stringify(payloadOrchestration) + "]");
 
 	// Initiating XMLHttpRequest Object:
 	var http_request = initiateXMLHttpObject();
 
-	// Send HTTP Request
-	//sendRequest(http_request, "POST", uri, true);
+	// Send HTTP Request to Facebook, LinkedIn, Salesforce amd Google Calendar:
+	sendRequest(http_request, "POST", uriOrchestration, true, payloadOrchestration);
 
-	alert("You send your message successfully!");
+
+	setTimeout(alert("You send your message successfully!"), 2500);
 
 	$("#postForm")[0].reset();
 }
 
 function setColour(colour) {
 
-	alert("Colour is [" + colour + "]");
+	console.log("Colour is [" + colour + "]");
 
 	if (!(colour != null && colour.length > 0))
 		return;
 
+	var uri = "http://" + globalIPAddressNode + ":" + globalPortNode + "/sphero/color/" + colour;// Sphero API
+			
 
-	var uri = "http://" + globalIPAddressICS + ":" + globalPortICS + "/sphero/color/" + colour;// Sphero API	
-
-	alert("URI is [" + uri + "]");
+	console.log("URI is [" + uri + "]");
 
 	// Initiating XMLHttpRequest Object:
 	var http_request = initiateXMLHttpObject();
 
 	// Send HTTP Request
-	//sendRequest(http_request, "POST", uri, true);
+	//sendRequest(http_request, "POST", uri, true, {});
 
 	alert("You send your message successfully!");
 
@@ -125,21 +131,21 @@ function setColour(colour) {
 
 function makeShape(shape, colour) {
 
-	alert("Shape is [" + shape + "], Colour is [" + colour + "]");
+	console.log("Shape is [" + shape + "], Colour is [" + colour + "]");
 
 	if (!(shape != null && shape.length > 0) || !(colour != null && colour.length > 0))
 		return;
 
 
-	var uri = "http://" + globalIPAddressICS + ":" + globalPortICS + "/sphero/shape/" + shape + "/color/" + colour;// Sphero API	
+	var uri = "http://" + globalIPAddressNode + ":" + globalPortNode + "/sphero/shape/" + shape + "/color/" + colour;// Sphero API	
 
-	alert("URI is [" + uri + "]");
+	console.log("URI is [" + uri + "]");
 
 	// Initiating XMLHttpRequest Object:
 	var http_request = initiateXMLHttpObject();
 
 	// Send HTTP Request
-	//sendRequest(http_request, "POST", uri, true);
+	//sendRequest(http_request, "POST", uri, true, {});
 
 	alert("You send your message successfully!");
 
@@ -159,7 +165,7 @@ function exampleOfASyncFunction(email) {
 
 	var uri = "http://" + globalIPAddress + ":7001/SCRequestAPIProject/user/pin/" + email.toLowerCase();// OSB REST Adapter
 
-	//alert("URI is [" + uri + "]");
+	console.log("URI is [" + uri + "]");
 
 	// Initiating XMLHttpRequest Object:
     var xmlHttp = initiateXMLHttpObject();
@@ -167,7 +173,7 @@ function exampleOfASyncFunction(email) {
 	xmlHttp.setRequestHeader("Accept", "application/json");
     xmlHttp.send(null);
 
-    //alert("response is [" + xmlHttp.responseText + "]");
+    console.log("response is [" + xmlHttp.responseText + "]");
 
 	// Javascript function JSON.parse to parse JSON data
 	var jsonObj = JSON.parse(xmlHttp.responseText);
@@ -183,15 +189,16 @@ function exampleOfASyncFunction(email) {
 }
 
 
-function sendRequest(http_request, verb, uri, async) {
+function sendRequest(http_request, verb, uri, async, data) {
 
-	//alert("Debugging on: Sending [" + uri + "] under verb [" + verb + "]");
+	console.log("Sending [" + uri + "] under verb [" + verb + "]");
 
     http_request.open(verb, uri, async);
 	http_request.setRequestHeader("Accept", "application/json");
-    http_request.send();
+	http_request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');	
+    http_request.send(JSON.stringify(data));
 
-	//alert("Your message was sent successfully.");
+	console.log("Your message was sent successfully.");
 }
 
 function initiateXMLHttpObject() {
