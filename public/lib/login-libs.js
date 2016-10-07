@@ -121,7 +121,7 @@ function setColour(colour) {
 	var http_request = initiateXMLHttpObject();
 
 	// Send HTTP Request
-	//sendRequest(http_request, "POST", uri, true, {});
+	sendRequest(http_request, "POST", uri, true, {});
 
 	alert("You send your message successfully!");
 
@@ -145,7 +145,7 @@ function makeShape(shape, colour) {
 	var http_request = initiateXMLHttpObject();
 
 	// Send HTTP Request
-	//sendRequest(http_request, "POST", uri, true, {});
+	sendRequest(http_request, "POST", uri, true, {});
 
 	alert("You send your message successfully!");
 
